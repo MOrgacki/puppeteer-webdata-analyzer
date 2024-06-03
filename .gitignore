@@ -1,0 +1,48 @@
+# This .gitignore file exists to prevent certain files from being committed into
+# your source code repository, when using a Git-based CI system. This file should be
+# in the root directory of your source code tree, and will not be detected by
+# most CI systems; it should be copied along with other files.
+#
+# This is a "best practice" .gitignore for Node.js source code that:
+# * does not include any dependencies (npm, yarn, etc.)
+# * does include test and/or opaque dependency manifests to be able
+#   to test/operate in multiple environments
+# * includes a "lib" directory with compiled sources for distribution
+# * does not include the results of running "npm install", but does include
+#   all of its dependencies (in package.json form)
+# * does include all of its dependencies, whether they are production
+#   or development dependencies
+#
+# If you are using something other than Node.js and/or npm to manage your
+# dependencies, then you will need a different .gitignore file.
+#
+# This is the most common pattern; if you have suggestions for making it more
+# applicable, please open an issue! We care deeply about compatibility
+# with all of the tooling in use by Node.js developers.
+#
+# Compatibility with non-Git CI systems: https://github.com/actions/runner/issues/304
+# Compatibility with TravisCI: https://github.com/travis-ci/travis-ci/issues/1296
+# Compatibility with Heroku: https://github.com/heroku/cli/issues/782
+# Compatibility with Google Cloud Build: https://github.com/google-garage/cloudbuild/issues/45
+# Compatibility with Appveyor: https://github.com/ci-visual/appveyor/issues/196
+# Compatibility with Azure Pipelines: https://github.com/Microsoft/azure-pipelines-tasks/issues/237
+# Compatibility with Tus: https://tus.qpaas.io/docs/advanced/ci/gitignore/
+# Compatibility with CircleCI: https://circleci.com/gh/circleci/machine/issues/108
+# Compatibility with CI/CD systems that do not support "npm install" or similar: https://github.com/actions/runner/issues/304
+# Compatibility with CI/CD systems that do not support "npm ci" or similar: https://github.com/actions/runner/issues/304
+# Compatibility with CI/CD systems that do not support "yarn install" or similar: https://github.com/actions/runner/issues/304
+# Compatibility with CI/CD systems that do not support "yarn ci" or similar: https://github.com/actions/runner/issues/304
+# Compatibility with CI/CD systems that do not support "bower install" or similar: https://github.com/actions/runner/issues/304
+# Compatibility with CI/CD systems that do not support "gulp" or similar: https://github.com/actions/runner/issues/304
+# Compatibility with CI/CD systems that do not support "grunt" or similar: https://github.com/actions/runner/issues/304
+# Compatibility with CI/CD systems that do not support "tsc" or similar: https://github.com/actions/runner/issues/304
+# Compatibility with CI/CD systems that do not support "eslint" or similar: https://github.com/actions/runner/issues/304
+# Compatibility with CI/CD systems that do not support "jest" or similar: https://github.com/actions/runner/issues/304
+# Compatibility with CI/CD systems that do not support "mocha" or similar: https://github.com/actions/runner/issues/304
+# Compatibility with CI/CD systems that do not support "cargo" or similar: https://github.com/actions/runner/issues/304
+# Compatibility with CI/CD systems that do not support "pip" or similar: https://github.com/actions/runner/issues/304
+# Compatibility with CI/CD systems
+package-lock.json
+.vscode
+.env
+/node_modules

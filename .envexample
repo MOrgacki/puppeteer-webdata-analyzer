@@ -1,0 +1,16 @@
+# Database connection information
+
+DB_HOST=localhost
+DB_PORT=5432
+DB_USER=myuser
+DB_PASSWORD=mypassword
+DB_NAME=mydb
+
+# WEB configuration
+
+MAIN_URL=https://autoastat.com/en
+USER_EMAIL=user
+USER_PASSWORD=pass
+SEARCH_URL=https://autoastat.com/en/form?type=1&make=10&model%5B0%5D=175&yearFrom=2012&yearTo=2013&auction%5B0%5D=1&auction%5B1%5D=2&auction%5B2%5D=4&dateFrom=2023-02-07&dateTo=2024-05-07&region=&sort%5Bsale_date%5D=desc&f%5Bwinamount%5D%5Bfrom%5D=&f%5Bwinamount%5D%5Bto%5D=&f%5Bestimatedrepairamount%5D%5Bfrom%5D=&f%5Bestimatedrepairamount%5D%5Bto%5D=&f%5Bactualcostvalue%5D%5Bfrom%5D=&f%5Bactualcostvalue%5D%5Bto%5D=&f%5Brundrive%5D%5B%5D=yes&f%5Bodometer%5D%5Bfrom%5D=&f%5Bodometer%5D%5Bto%5D=&f%5Bengine%5D%5B%5D=62
+DATE_FROM=2023-02-07
+DATE_TO=2024-05-07
