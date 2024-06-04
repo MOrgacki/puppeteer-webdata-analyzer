@@ -5,7 +5,7 @@ import {
   searchSelectors,
   siteDataSelectors,
   tileSelectors,
-} from "./locators.js";
+} from "./helpers/locators.js";
 
 class WebAutomation {
   constructor() {
@@ -31,12 +31,13 @@ class WebAutomation {
     await this.login();
     await this.search();
     const siteData = await this.getSiteData();
-    const tilesData = await this.getTilesData();
+    console.log(tilesData);
     // await this.parseTile(siteData.maxPageNumber, siteData.tilesCount, tilesData);
   }
 
   async login() {
-    const { usernameInput, passwordInput, submitButton } = loginSelectors;
+    const { loginButton, usernameInput, passwordInput, submitButton } =
+      loginSelectors;
     await this.page.waitForSelector(loginButton);
     await this.page.click(loginButton);
     await this.page.url().match(this.mainURL + "/login");
@@ -65,7 +66,7 @@ class WebAutomation {
         return el;
       }, tilesCount);
       return { maxPageNum, tilesCountNum };
-    } catch (err) {
+    } catch {
       console.log("Couldn't parse data");
     }
   }
@@ -85,12 +86,18 @@ class WebAutomation {
           runAndDrive,
           odometer,
           saleDate,
+          facility,
+          saleDocument,
           price,
+          lotStatus,
+          seller,
         } = selectors;
         const tiles = document.querySelectorAll(mainInfo);
         return Array.from(tiles).map((tile) => {
           const columns = tile.querySelectorAll(holders);
-          const imageText = columns[0].querySelector(image)?.innerText || null;
+          debugger;
+          const imageText = columns[0].querySelector(image)?.src || null;
+
           const vehicleDataEl = columns[1].querySelector(vehicleData);
           const auctionDataEl = columns[2].querySelector(auctionData);
           const bidDataEl = columns[3].querySelector(bidData);
@@ -103,7 +110,12 @@ class WebAutomation {
               vehicleDataEl.querySelector(runAndDrive)?.innerText || null,
             odometer: vehicleDataEl.querySelector(odometer)?.innerText || null,
             saleDate: auctionDataEl.querySelector(saleDate)?.innerText || null,
+            facility: auctionDataEl.querySelector(facility)?.innerText || null,
+            saleDocument:
+              auctionDataEl.querySelector(saleDocument)?.innerText || null,
             price: bidDataEl.querySelector(price)?.innerText || null,
+            lotStatus: bidDataEl.querySelector(lotStatus)?.innerText || null,
+            seller: bidDataEl.querySelector(seller)?.innerText || null,
           };
         });
       }, tileSelectors);
@@ -113,13 +125,14 @@ class WebAutomation {
     }
   }
 
-  // async parseTile(maxPageNumber, tilesCount, tilesData) {
-  //   maxPageNumber = 1;
-  //   return tilesData.map((tile) => {
-  //     console.log(tile.innerText);
-  //     return tile.innerText;
-  //   });
-  // }
+  async parseAllTiles(maxPageNumber, tilesCount) {
+    for (let i = 1; i <= maxPageNumber; i++) {
+      const tilesData = await this.getTilesData();
+      // save tilesData to db
+      // incerement site (goto next page)
+    }
+  }
+  async savetoDB() {}
 }
 
 const automation = new WebAutomation();

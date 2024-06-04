@@ -18,7 +18,7 @@ export const siteDataSelectors = {
 export const tileSelectors = {
   mainInfo: ".lot-main-info",
   holders: ".holder",
-  image: "div:nth-child(1)",
+  image: "div:nth-child(1) img",
   vehicleData: "div:nth-child(1)",
   auctionData: "div:nth-child(1)",
   bidData: "div:nth-child(1)",
@@ -27,5 +27,9 @@ export const tileSelectors = {
   runAndDrive: "div > dl > dd:nth-child(4)",
   odometer: "div > dl > dd:nth-child(6)",
   saleDate: "div > dl > dd:nth-child(2)",
-  price: ".subtitle green",
+  facility: "div > dl > dd:nth-child(4)",
+  saleDocument: "div > dl > dd:nth-child(6)",
+  price: ".subtitle.green",
+  lotStatus: "div > dl > dd:nth-child(4) > span",
+  seller: "div > dl > dd:nth-child(6) > span",
 };
