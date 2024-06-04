@@ -2,14 +2,15 @@ import { connect } from "puppeteer-real-browser";
 import "dotenv/config";
 import {
   loginSelectors,
-  searchSelectors,
   siteDataSelectors,
   tileSelectors,
 } from "./helpers/locators.js";
+import { DatabaseClient } from "./helpers/db_connect.js";
 
 class WebAutomation {
   constructor() {
     this.mainURL = process.env.MAIN_URL;
+    this.searchURL = process.env.SEARCH_URL;
     this.userEmail = process.env.USER_EMAIL;
     this.userPassword = process.env.USER_PASSWORD;
   }
@@ -22,6 +23,7 @@ class WebAutomation {
     this.page = response.page;
     this.browser = response.browser;
     this.setTarget = response.setTarget;
+    const dbclient = new DatabaseClient();
 
     await this.page.goto(this.mainURL, {
       waitUntil: "domcontentloaded",
@@ -30,9 +32,9 @@ class WebAutomation {
     await this.setTarget({ status: true });
     await this.login();
     await this.search();
-    const siteData = await this.getSiteData();
-    console.log(tilesData);
-    // await this.parseTile(siteData.maxPageNumber, siteData.tilesCount, tilesData);
+    await dbclient.run();
+    const { maxPageNum, tilesCountNum } = await this.getSiteData();
+    await this.parseAllTiles(maxPageNum, tilesCountNum);
   }
 
   async login() {
@@ -49,7 +51,7 @@ class WebAutomation {
   }
 
   async search() {
-    await this.page.goto(searchSelectors.searchURL, {
+    await this.page.goto(this.mainURL + this.searchURL, {
       waitUntil: "domcontentloaded",
     });
   }
@@ -127,9 +129,19 @@ class WebAutomation {
 
   async parseAllTiles(maxPageNumber, tilesCount) {
     for (let i = 1; i <= maxPageNumber; i++) {
-      const tilesData = await this.getTilesData();
-      // save tilesData to db
-      // incerement site (goto next page)
+      if (tilesCount >= 1) {
+        const tilesData = await this.getTilesData();
+        console.log(tilesData);
+        // save tilesData to db
+        // incerement site (goto next page)
+        await this.page.goto(
+          this.mainURL + this.searchURL + "&page=" + (i + 1),
+          {
+            waitUntil: "domcontentloaded",
+          }
+        );
+        await setTimeout(() => {}, 1000);
+      }
     }
   }
   async savetoDB() {}

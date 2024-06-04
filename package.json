@@ -8,6 +8,7 @@
     "antibotbrowser": "^1.0.5",
     "babel": "^6.23.0",
     "dotenv": "^16.4.5",
+    "mongodb": "^6.7.0",
     "puppeteer": "^22.8.1",
     "puppeteer-extra": "^3.3.6",
     "puppeteer-extra-plugin-stealth": "^2.11.2"
