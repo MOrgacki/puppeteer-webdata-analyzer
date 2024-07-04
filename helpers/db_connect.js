@@ -5,19 +5,48 @@ export class DatabaseClient {
 
   constructor() {
     this.client = new MongoClient('mongodb://localhost:27017');
+    this.dbName = 'scraped_data';
+    this.collectionName = 'cars';
   }
 
-  async run() {
+  async connect() {
     try {
-      const database = this.client.db('scraped_data');
-      const cars = database.collection('cars');
-      const query = { title: 'Back to the Future' };
-      const car = await cars.insertOne(query);
-      console.log(car);
-    } finally {
-      // Ensures that the client will close when you finish/error
-      await this.client.close();
+      await this.client.connect();
+      this.db = this.client.db(this.dbName);
+      this.collection = this.db.collection(this.collectionName);
+    } catch (error) {
+      console.error('Error connecting to database:', error);
     }
   }
-  invoke() {}
+
+  /**
+   *
+   *
+   * @param {Object} data
+   * @memberof DatabaseClient
+   */
+  async insertData(data) {
+    try {
+      await this.collection.insertMany(data);
+    } catch (error) {
+      console.error('Error inserting data:', error);
+    }
+  }
+
+  async close() {
+    await this.client.close();
+  }
+
+  async clearCollection() {
+    try {
+      await this.collection.drop();
+      console.log(`Collection ${this.collectionName} dropped successfully.`);
+    } catch (err) {
+      if (err.code === 26) {
+        console.log(`Collection ${this.collectionName} does not exist.`);
+      } else {
+        throw err;
+      }
+    }
+  }
 }

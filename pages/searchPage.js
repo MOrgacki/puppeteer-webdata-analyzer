@@ -1,10 +1,12 @@
 import { siteDataSelectors, tileSelectors } from '../helpers/locators.js';
 import { Routes } from '../helpers/routes.js';
+import { DatabaseClient } from '../helpers/db_connect.js';
 
 export class SearchPage {
   constructor(page) {
     this.page = page;
-    this.routes = new Routes();
+    this.routes = Routes.instance;
+    this.dbClient = DatabaseClient.instance;
   }
 
   async getSiteData() {
@@ -23,6 +25,7 @@ export class SearchPage {
         const el = document.querySelectorAll(selector).length;
         return el;
       }, siteDataSelectors.tilesCount);
+      console.log({ maxPageNum, tilesCountNum });
       return { maxPageNum, tilesCountNum };
     } catch {
       console.log("Couldn't parse data on first search page");
@@ -42,7 +45,6 @@ export class SearchPage {
       });
 
       const tilesData = await this.page.evaluate((selectors) => {
-        console.log('Selectors inside evaluate:', selectors);
         const tiles = document.querySelectorAll(selectors.mainInfo);
         return Array.from(tiles).map((tile) => {
           const columns = tile.querySelectorAll(selectors.holders);
@@ -89,14 +91,15 @@ export class SearchPage {
   }
 
   async parseAllTiles(maxPageNumber, tilesCount) {
-    // mock pagination
-    maxPageNumber = 2;
+    await this.dbClient.connect();
+    await this.dbClient.clearCollection();
     for (let i = 0; i < maxPageNumber; i++) {
       if (tilesCount >= 1) {
         this.routes.goTo(this.page, this.routes.searchURL + '&page=' + (i + 1));
         try {
           const tilesData = await this.#getTilesData();
           console.log(tilesData);
+          await this.dbClient.insertData(tilesData);
         } catch {
           console.log("Couldn't get data from tiles");
         }
@@ -105,5 +108,6 @@ export class SearchPage {
         await setTimeout(() => {}, 4000);
       }
     }
+    await this.dbClient.close();
   }
 }
